@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hf/domain/model/movie_listitem.dart';
 import 'package:flutter_hf/domain/movie_interactor.dart';
+import 'package:flutter_hf/ui/details/details_page.dart';
+
+import 'movie_list_item.dart';
 
 class MoviesPageWidget extends StatefulWidget {
   @override
@@ -48,7 +51,14 @@ class _MoviesPageWidgetState extends State<MoviesPageWidget>{
                 return ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (context, i){
-                    return ListItem(movies[i]);
+                    return ListItem(
+                      movies[i],
+                      onTap: (item) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                DetailsPageWidget(item.malId)));
+                      },
+                    );
                   },
                   itemCount: movies.length,
                 );
@@ -60,55 +70,23 @@ class _MoviesPageWidgetState extends State<MoviesPageWidget>{
             }
         ),
       ),
-    );
-  }
-}
-
-
-class ListItem extends StatelessWidget {
-  final MovieListItem item;
-
-  const ListItem(this.item, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        height: 80,
-        child: Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: 1 / 1,
-              child: Image.network(
-                item.imageUrl
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text("${item.score} - ${item.aired.year} - ${item.members}")],
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text("${item.isFavorite}"),
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        // onTap: (int index) {
+        //   switch(index){
+        //     case 0:
+        //
+        //   }
+        // },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_movies),
+            label: "Movies",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favorites"
+          ),
+        ],
       ),
     );
   }

@@ -26,8 +26,8 @@ class _FavoritesPageState extends State<FavoritesPage>{
     super.initState();
   }
 
-  void onToggleFavorite(MovieListItem movie) {
-    _movieInteractor.toggleFavorite(movie.malId);
+  void onToggleFavorite(MovieListItem movie) async {
+    await _movieInteractor.toggleFavorite(movie.malId);
     refreshMovies();
   }
 

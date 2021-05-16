@@ -29,12 +29,12 @@ class _MoviesPageState extends State<MoviesPage>{
   }
 
   void onPopupMenuItemClicked(SortOptions selected) async {
-    _movieInteractor.setSortOption(selected);
+    await _movieInteractor.setSortOption(selected);
     refreshMovies();
   }
 
-  void onToggleFavorite(MovieListItem movie) {
-    _movieInteractor.toggleFavorite(movie.malId);
+  void onToggleFavorite(MovieListItem movie) async {
+    await _movieInteractor.toggleFavorite(movie.malId);
     refreshMovies();
   }
 

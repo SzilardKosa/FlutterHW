@@ -120,10 +120,16 @@ class _DetailsPageWidgetState extends State<DetailsPageWidget> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Text(
-                                    details.rated,
-                                    style: TextStyle(fontSize: 25),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      details.rated,
+                                      maxLines: 1,
+                                      style: TextStyle(fontSize: 25),
+                                      overflow: TextOverflow.fade,
+                                    ),
                                   ),
+
 
                                 ],
                               ),

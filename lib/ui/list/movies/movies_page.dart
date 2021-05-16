@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hf/domain/model/movie_listitem.dart';
+import 'package:flutter_hf/domain/model/sort_enum.dart';
 import 'package:flutter_hf/domain/movie_interactor.dart';
 import 'package:flutter_hf/ui/details/details_page.dart';
 
@@ -27,16 +28,20 @@ class _MoviesPageState extends State<MoviesPage>{
     super.initState();
   }
 
+  void onPopupMenuItemClicked(SortOptions selected) async {
+    _movieInteractor.setSortOption(selected);
+    refreshMovies();
+  }
+
   void onToggleFavorite(MovieListItem movie) {
     _movieInteractor.toggleFavorite(movie.malId);
     refreshMovies();
   }
 
-  void refreshMovies([Function? beforeRefresh]) {
+  void refreshMovies() {
     if (mounted) {
       setState(() {
-        if (beforeRefresh != null) beforeRefresh();
-          moviesRequest = _movieInteractor.getMovies();
+        moviesRequest = _movieInteractor.getMovies();
       });
     }
   }
@@ -46,6 +51,27 @@ class _MoviesPageState extends State<MoviesPage>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Studio Ghibli movies"),
+        actions: [
+          PopupMenuButton<SortOptions>(
+            onSelected: onPopupMenuItemClicked,
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<SortOptions>(
+                  value: SortOptions.newest,
+                  child: Text("Sort by Date")
+                ),
+                PopupMenuItem<SortOptions>(
+                    value: SortOptions.score,
+                    child: Text("Sort by Rating")
+                ),
+                PopupMenuItem<SortOptions>(
+                    value: SortOptions.title,
+                    child: Text("Sort by Title")
+                ),
+              ];
+            }
+          )
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hf/domain/interactor_provider.dart';
 import 'package:flutter_hf/domain/movie_interactor.dart';
 import 'package:flutter_hf/ui/list/list_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final interactor = MovieInteractor();
 
   runApp(
-    InteractorProvider(
-      interactor: interactor,
+    Provider(
+      create: (_) => MovieInteractor(),
       child: MyApp()
     ),
   );
@@ -24,9 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ListPage(
-        movieInteractor: InteractorProvider.of(context)!.interactor,
-      ),
+      home: ListPage(),
     );
   }
 }

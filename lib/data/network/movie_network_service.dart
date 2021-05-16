@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_hf/data/model/network_movie_details.dart';
-import 'package:flutter_hf/data/model/network_movie_list.dart';
+import 'package:flutter_hf/data/network/model/network_movie_details.dart';
+import 'package:flutter_hf/data/network/model/network_movie_list.dart';
 import 'package:http/http.dart' as http;
 
 const _baseUrl = "api.jikan.moe";

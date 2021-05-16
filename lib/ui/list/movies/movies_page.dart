@@ -7,18 +7,38 @@ import 'package:flutter_hf/ui/details/details_page.dart';
 import '../movie_list_item.dart';
 
 class MoviesPage extends StatefulWidget {
+  final MovieInteractor movieInteractor;
+
+  MoviesPage(this.movieInteractor);
+
   @override
-  _MoviesPageState createState() => _MoviesPageState();
+  _MoviesPageState createState() => _MoviesPageState(movieInteractor);
 }
 
 class _MoviesPageState extends State<MoviesPage>{
-  final _movieInteractor = MovieInteractor();
+  final MovieInteractor _movieInteractor;
   Future<List<MovieListItem>>? moviesRequest;
+
+  _MoviesPageState(this._movieInteractor);
 
   @override
   void initState() {
-    moviesRequest = _movieInteractor.getMovies("start_date", "desc");
+    moviesRequest = _movieInteractor.getMovies();
     super.initState();
+  }
+
+  void onToggleFavorite(MovieListItem movie) {
+    _movieInteractor.toggleFavorite(movie.malId);
+    refreshMovies();
+  }
+
+  void refreshMovies([Function? beforeRefresh]) {
+    if (mounted) {
+      setState(() {
+        if (beforeRefresh != null) beforeRefresh();
+          moviesRequest = _movieInteractor.getMovies();
+      });
+    }
   }
 
   @override
@@ -29,7 +49,7 @@ class _MoviesPageState extends State<MoviesPage>{
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          var request = _movieInteractor.getMovies("start_date", "desc");
+          var request = _movieInteractor.getMovies();
           setState(() {
             moviesRequest = request;
           });
@@ -53,11 +73,12 @@ class _MoviesPageState extends State<MoviesPage>{
                   itemBuilder: (context, i){
                     return ListItem(
                       movies[i],
+                      onToggleFavorite: (movie) => onToggleFavorite(movie),
                       onTap: (item) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
-                                DetailsPageWidget(item.malId)
+                                DetailsPageWidget(_movieInteractor, item.malId)
                           )
                         );
                       },

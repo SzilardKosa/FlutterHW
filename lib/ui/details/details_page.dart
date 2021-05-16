@@ -3,21 +3,22 @@ import 'package:flutter_hf/domain/model/movie_details.dart';
 import 'package:flutter_hf/domain/movie_interactor.dart';
 
 class DetailsPageWidget extends StatefulWidget {
+  final MovieInteractor movieInteractor;
   final int movieId;
 
-  DetailsPageWidget(this.movieId);
+  DetailsPageWidget(this.movieInteractor, this.movieId);
 
   @override
-  _DetailsPageWidgetState createState() => _DetailsPageWidgetState(movieId);
+  _DetailsPageWidgetState createState() => _DetailsPageWidgetState(movieInteractor, movieId);
 }
 
 class _DetailsPageWidgetState extends State<DetailsPageWidget> {
+  final MovieInteractor _movieInteractor;
   final int movieId;
-  final _movieInteractor = MovieInteractor();
 
   Future<MovieDetails>? detailsRequest;
 
-  _DetailsPageWidgetState(this.movieId);
+  _DetailsPageWidgetState(this._movieInteractor, this.movieId);
 
   @override
   void initState() {

@@ -4,11 +4,13 @@ import 'package:flutter_hf/domain/model/movie_listitem.dart';
 class ListItem extends StatelessWidget {
   final MovieListItem item;
   final Function(MovieListItem item) onTap;
+  final Function(MovieListItem item) onToggleFavorite;
 
   const ListItem(
   this.item, {
     required this.onTap,
-    Key? key
+    required this.onToggleFavorite,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -76,7 +78,7 @@ class ListItem extends StatelessWidget {
                                 icon: item.isFavorite ?
                                 Icon(Icons.favorite, color: Colors.pink.shade500,) :
                                 Icon(Icons.favorite_border, color: Colors.pink.shade500,),
-                                onPressed: (){}
+                                onPressed: () => onToggleFavorite(item),
                             ),
                           ],
                         ),

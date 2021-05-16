@@ -6,18 +6,38 @@ import 'package:flutter_hf/ui/details/details_page.dart';
 import 'package:flutter_hf/ui/list/movie_list_item.dart';
 
 class FavoritesPage extends StatefulWidget {
+  final MovieInteractor movieInteractor;
+
+  FavoritesPage(this.movieInteractor);
+
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
+  _FavoritesPageState createState() => _FavoritesPageState(movieInteractor);
 }
 
 class _FavoritesPageState extends State<FavoritesPage>{
-  final _movieInteractor = MovieInteractor();
-  Future<List<MovieListItem>>? moviesRequest;
+  final MovieInteractor _movieInteractor;
+  Future<List<MovieListItem>>? favoritesRequest;
+
+  _FavoritesPageState(this._movieInteractor);
 
   @override
   void initState() {
-    moviesRequest = _movieInteractor.getMovies("start_date", "desc");
+    favoritesRequest = _movieInteractor.getFavorites();
     super.initState();
+  }
+
+  void onToggleFavorite(MovieListItem movie) {
+    _movieInteractor.toggleFavorite(movie.malId);
+    refreshMovies();
+  }
+
+  void refreshMovies([Function? beforeRefresh]) {
+    if (mounted) {
+      setState(() {
+        if (beforeRefresh != null) beforeRefresh();
+        favoritesRequest = _movieInteractor.getFavorites();
+      });
+    }
   }
 
   @override
@@ -28,14 +48,14 @@ class _FavoritesPageState extends State<FavoritesPage>{
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          var request = _movieInteractor.getMovies("start_date", "desc");
+          var request = _movieInteractor.getFavorites();
           setState(() {
-            moviesRequest = request;
+            favoritesRequest = request;
           });
           await request;
         },
         child: FutureBuilder<List<MovieListItem>>(
-            future: moviesRequest,
+            future: favoritesRequest,
             builder: (context, snapshot) {
               if (snapshot.hasError){
                 return Center(
@@ -52,10 +72,11 @@ class _FavoritesPageState extends State<FavoritesPage>{
                   itemBuilder: (context, i){
                     return ListItem(
                       movies[i],
+                      onToggleFavorite: (movie) => onToggleFavorite(movie),
                       onTap: (item) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                DetailsPageWidget(item.malId)));
+                                DetailsPageWidget(_movieInteractor, item.malId)));
                       },
                     );
                   },

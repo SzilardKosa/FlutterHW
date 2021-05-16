@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter_hf/data/movie_network_service.dart';
+import 'package:flutter_hf/data/network/movie_network_service.dart';
 import 'package:flutter_hf/domain/model/movie_listitem.dart';
 import 'package:flutter_hf/domain/model/movie_details.dart';
 

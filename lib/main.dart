@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hf/ui/movies/movies_page.dart';
+import 'package:flutter_hf/ui/list/list_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MoviesPageWidget(),
+      home: ListPage(),
     );
   }
 }

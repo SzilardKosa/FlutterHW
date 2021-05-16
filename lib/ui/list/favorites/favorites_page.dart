@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hf/domain/model/movie_listitem.dart';
 import 'package:flutter_hf/domain/movie_interactor.dart';
 import 'package:flutter_hf/ui/details/details_page.dart';
+import 'package:flutter_hf/ui/list/movie_list_item.dart';
 
-import 'movie_list_item.dart';
-
-class MoviesPageWidget extends StatefulWidget {
+class FavoritesPage extends StatefulWidget {
   @override
-  _MoviesPageWidgetState createState() => _MoviesPageWidgetState();
+  _FavoritesPageState createState() => _FavoritesPageState();
 }
 
-class _MoviesPageWidgetState extends State<MoviesPageWidget>{
+class _FavoritesPageState extends State<FavoritesPage>{
   final _movieInteractor = MovieInteractor();
   Future<List<MovieListItem>>? moviesRequest;
 
@@ -25,7 +24,7 @@ class _MoviesPageWidgetState extends State<MoviesPageWidget>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Studio Ghibli movies"),
+        title: Text("Favorites"),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -69,24 +68,6 @@ class _MoviesPageWidgetState extends State<MoviesPageWidget>{
               );
             }
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        // onTap: (int index) {
-        //   switch(index){
-        //     case 0:
-        //
-        //   }
-        // },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_movies),
-            label: "Movies",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Favorites"
-          ),
-        ],
       ),
     );
   }
